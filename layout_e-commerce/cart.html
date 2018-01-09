@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title>
+   MyCommerce
+  </title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"/>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+ </head>
+ <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+   <a class="navbar-brand" href="index">
+    MyCommerce
+   </a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon">
+    </span>
+   </button>
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+     <a class="nav-link" href="cart">
+      <i class="fa fa-2x fa-shopping-cart" aria-hidden="true">
+      </i>
+      
+     </a>
+    </form>
+   </div>
+  </nav>
+  <div class="container mt-5">
+   <h3>
+    Carrello
+   </h3>
+   <table class="table table-striped table-responsive">
+    <thead>
+     <tr>
+      <th>
+       Prodotto
+      </th>
+      <th>
+       Prezzo
+      </th>
+      <th>
+       Quantità
+      </th>
+      <th>
+       Totale
+      </th>
+     </tr>
+    </thead>
+    <tbody id="lista_oggetti">
+    </tbody>
+   </table>
+   <div class="text-right mt-4">
+    <i>
+     Totale:
+    </i>
+    <strong id="totale_spesa">
+    </strong>
+    <br/>
+    <button class="btn btn-lg btn-success mt-4" id="completa_ordine">
+     Completa ordine
+    </button>
+    <button class="btn btn-lg btn-success mt-4" id="svuota_carrello">
+     Svuota carello
+    </button>
+   </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <script>
+        jQuery.noConflict()(function($) {
+          "use strict";
+          $(document).ready(function() {
+
+              $("#completa_ordine").click(function(e){
+                if(localStorage.getItem("carrello") == undefined || localStorage.getItem("carrello") == "undefined" || localStorage.getItem("carrello") == ""){
+                  alert("Il carrello è vuoto")
+                  return false
+                }
+
+                window.location.href = "/checkout"
+              })
+  
+              $("#svuota_carrello").click(function(){
+                  localStorage.setItem("carrello", undefined)
+                  location.reload()
+              })
+    
+            var totale = 0;
+    
+            $.each(JSON.parse(localStorage.getItem("carrello")), function(k, v){
+                $("#lista_oggetti").append("<tr>"+
+          "<td>"+ v.nome +"</td>"+
+          "<td>"+ v.prezzo +"€ </td>"+
+          "<td>"+ v.quantita +"</td>"+
+          "<td>"+ (v.prezzo * v.quantita)+"€ </td>"+
+        "</tr>")
+    
+                totale += (v.prezzo * v.quantita)
+    
+            })
+    
+            $("#totale_spesa").text(totale + "€")
+          });
+        });
+      </script>
+ </body>
+</html>

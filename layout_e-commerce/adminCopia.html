@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>MyCommerce</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="index">MyCommerce</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <!--<a class="nav-link" href="index">Home <span class="sr-only">(current)</span></a>-->
+        </li>
+        <li class="nav-item">
+          <!--<a class="nav-link" href="login">login</a> -->
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <a class="nav-link" href="cart"><i class="fa fa-2x fa-shopping-cart" aria-hidden="true"></i>  <span class="badge badge-danger align-top">1</span></a>
+      </form>
+    </div>
+  </nav>
+
+
+
+  <div class="container">
+
+<button id="crea_nuovo">
+  Aggiungi prodotto
+</button>
+
+<div class="row">
+ <div class="col-md-2">
+  Nome prodotto
+ </div>
+ <div class="col-md-2">
+  immagine
+ </div>
+ <div class="col-md-2">
+  quantità
+ </div>
+ <div class="col-md-2">
+  opzione modifica
+ </div>
+ <div class="col-md-2">
+  opzione rimuovi
+ </div>
+</div>
+<div id="response_prodotti_ajax">
+
+</div>
+
+<div id="popup_generale">
+ <h1 id="nome_pagina"></h1>
+  <div class="row">
+  <div class="col-md-2">
+   Id prodotto
+  </div>
+  <div class="col-md-2">
+   Nome prodotto
+  </div>
+  <div class="col-md-2">
+   Url immagine
+  </div>
+  <div class="col-md-2">
+   Quantità
+  </div>
+    <div class="col-md-2">
+   Aggiungi
+  </div>
+ </div>
+ <div class="row">
+  <div class="col-md-2">
+   <input type="text" disabled id="id_record" />
+  </div>
+  <div class="col-md-2">
+   <input type="text" id="nome_prodotto" />
+  </div>
+  <div class="col-md-2">
+   <input type="text" id="immagine_prodotto" />
+  </div>
+  <div class="col-md-2">
+   <input type="text" id="quantita_prodotto" />
+  </div>
+  <div class="col-md-2">
+   <button id="_action">
+   </button>
+  </div>
+ </div>
+</div>
+
+
+
+
+
+
+
+
+ 
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+
+<script>
+  jQuery.noConflict()(function($) {
+  "use strict";
+  $(document).ready(function() {
+
+    $("#popup_generale").hide();
+
+    var is_modifica = false
+
+      $.ajax({
+      url: "admin/prodotti",
+      method:"GET",
+      success: function(response){
+        $.each(response, function(key, value){
+$("#response_prodotti_ajax").append("<div class=\"row\">" +
+"<div class=\"col-md-2\">" +
+value.nome +
+" </div>" +
+" <div class=\"col-md-2\">" +
+" <img style='max-width:60px;' src='"+ value.immagine +"' />" +
+" </div>" +
+" <div class=\"col-md-2\">" +
+value.quantita +
+" </div>" +
+" <div class=\"col-md-2\"><a href=\"#\" class=\"modifica_prodotto\" data-id='"+ value._id +"' data-nome='"+ value.nome +"' data-immagine='"+ value.immagine +"' data-quantita='"+ value.quantita +"'>[modifica]</a></div>" +
+" <div class=\"col-md-2\"><a href=\"#\" class=\"rimuovi_prodotto\" data-nome='"+ value.nome +"'>[rimuovi]</a></div>" +
+"</div>");
+        })
+      }
+    })
+
+    $("button#crea_nuovo").click(function(){
+      $("#popup_generale").show();
+      $("#nome_pagina, #_action").text("Inserisci prodotto")
+      $("#nome_prodotto, #immagine_prodotto, #quantita_prodotto, #id_record").val("")
+    })
+
+    $(document).on("click", ".modifica_prodotto", function(){
+      
+      $("#popup_generale").show();
+      $("#nome_pagina, #_action").text("Modifica prodotto")
+
+      var t = $(this);
+
+      $("input#nome_prodotto").val(t.data("nome"));
+      $("input#immagine_prodotto").val(t.data("immagine"));
+      $("input#quantita_prodotto").val(t.data("quantita"));
+      $("input#id_record").val(t.data("id"))
+
+
+      is_modifica = true
+
+    })
+
+    $(document).on("click", ".rimuovi_prodotto", function(){
+      
+
+      var t = $(this);
+      $("input#id_record").val(t.data("id"));
+
+
+      is_rimosso = true
+
+    })
+    $(document).on("click", "#_action", function(){
+
+
+      const a = $("input#nome_prodotto").val()
+      const b = $("input#immagine_prodotto").val()
+      const c = $("input#quantita_prodotto").val()
+      const d = $("input#id_record").val()
+
+      // inserimento
+
+      if (!is_modifica){
+
+      $.ajax({
+        url: "admin/prodotti/nuovo",
+        headers     : { 'Content-Type': 'application/json' },
+        dataType:"json",
+        data: JSON.stringify({
+          nome: a,
+          immagine: b,
+          quantita: c
+        }),
+        method: "POST",
+        success: function(response){
+          if(response.inserito == true){
+            location.reload()
+          }else{
+            alert("Il prodotto non è stato inserito!")
+            return false
+          }
+        }
+      })
+
+    }else{
+
+      $.ajax({
+        url: "admin/prodotti/edit",
+        headers     : { 'Content-Type': 'application/json' },
+        dataType:"json",
+        data: JSON.stringify({
+          _id: d,
+          nome: a,
+          immagine: b,
+          quantita: c
+        }),
+        method: "POST",
+        success: function(response){
+          if(response.modificato == true){
+            location.reload()
+          }else{
+            alert("Il prodotto non è stato modificato correttamente!")
+            return false
+          }
+        }
+      })
+
+
+    }
+
+    })
+
+  });
+});
+</script>
+
+
+</body>
+</html>

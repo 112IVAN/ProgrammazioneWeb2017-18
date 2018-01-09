@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server.js",
+    "database": "mongod --dbpath data/db"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "consolidate": "^0.15.0",
+    "express": "^4.16.2",
+    "express-mail": "0.0.1",
+    "jsonwebtoken": "^8.1.0",
+    "mongod": "^2.0.0",
+    "mongoose": "^4.13.2",
+    "mustache": "^2.3.0",
+    "nodemailer": "^4.4.1",
+    "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.4",
+    "nodemon": "^1.14.7"
+  }
+}
